@@ -6,5 +6,5 @@ Run this in the rom folder
 
 ```
 git clone https://github.com/Mudit200408/setup 
-./setup/setup.sh
+./setup/setup.sh <pixelstar/tpp>
 ```

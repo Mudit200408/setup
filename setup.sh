@@ -1,10 +1,24 @@
 #!/bin/bash
 
-cd..
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 {pixelstar|tpp}"
+    exit 1
+fi
 
-# Clone repositories
-git clone https://github.com/Mudit200408/device_xiaomi_munch device/xiaomi/munch 
-git clone https://github.com/Mudit200408/device_xiaomi_sm8250-common device/xiaomi/sm8250-common
+if [ "$1" == "pixelstar" ]; then
+    # Clone repositories for pixelstar
+    git clone https://github.com/Mudit200408/device_xiaomi_munch device/xiaomi/munch 
+    git clone https://github.com/Mudit200408/device_xiaomi_sm8250-common device/xiaomi/sm8250-common
+elif [ "$1" == "tpp" ]; then
+    # Clone repositories for tpp
+    git clone https://github.com/Mudit200408/device_xiaomi_munch -b 14-tpp device/xiaomi/munch 
+    git clone https://github.com/Mudit200408/device_xiaomi_sm8250-common -b 14-tpp device/xiaomi/sm8250-common
+else
+    echo "Invalid argument: $1. Use 'pixelstar' or 'tpp'."
+    exit 1
+fi
+
+# Clone common repositories
 git clone https://github.com/Mudit200408/hardware_xiaomi hardware/xiaomi
 git clone https://gitea.com/hdzungx/android_vendor_xiaomi_miuicamera vendor/xiaomi/miuicamera
 git clone https://github.com/TheParasiteProject/packages_apps_KProfiles packages/apps/KProfiles 
@@ -36,3 +50,5 @@ chmod +x antman
 # Go back to the original directory again
 cd ../../../../..
 
+# Modify the AndroidManifest.xml
+sed -i 's/android:minSdkVersion="19"/android:minSdkVersion="21"/' prebuilts/sdk/current/androidx/m2repository/androidx/preference/preference/1.3.0-alpha01/manifest/AndroidManifest.xml
