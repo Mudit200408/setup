@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 {pixelstar|tpp}"
+    echo "Usage: $0 {pixelstar|tpp|rising}"
     exit 1
 fi
 
@@ -13,12 +13,20 @@ elif [ "$1" == "tpp" ]; then
     # Clone repositories for tpp
     git clone https://github.com/Mudit200408/device_xiaomi_munch -b 14-tpp device/xiaomi/munch 
     git clone https://github.com/Mudit200408/device_xiaomi_sm8250-common -b 14-tpp device/xiaomi/sm8250-common
+elif [ "$1" == "rising" ]; then
+    git clone https://github.com/Mudit200408/device_xiaomi_munch -b 14-rising device/xiaomi/munch 
+    git clone https://github.com/Mudit200408/device_xiaomi_sm8250-common -b 14-rising device/xiaomi/sm8250-common
+    cd frameworks/native
+    git fetch https://github.com/Project-PixelStar/frameworks_native
+    git cherry-pick 21bd93f82538a10df34e0747e6326a74a3b1336b
+    cd ../../
 else
     echo "Invalid argument: $1. Use 'pixelstar' or 'tpp'."
     exit 1
 fi
 
 # Clone common repositories
+rm -rf hardware/xiaomi
 git clone https://github.com/Mudit200408/hardware_xiaomi hardware/xiaomi
 git clone https://gitea.com/hdzungx/android_vendor_xiaomi_miuicamera vendor/xiaomi/miuicamera
 git clone https://github.com/TheParasiteProject/packages_apps_KProfiles packages/apps/KProfiles 
